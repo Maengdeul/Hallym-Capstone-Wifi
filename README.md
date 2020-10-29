@@ -1,25 +1,13 @@
 # Hallym-Capstone-Wifi
 
-<ipTime A8004T 공유기 기준 OpenWrt 설치 방법>
-  1. 공유기 설치
-  2. 192.168.0.1 접속
-  3. 내부 ip를 192.168.1.1로 변경
-  4. OpenWrt 공식 사이트에서 ipTime A8004T의 Firmware OpenWrt snapshot Install URL을 통해 해당 파일 다운로드
-  5. 192.168.0.1에서 펌웨어 업데이트 페이지로 이동
-  6. 수동 업그레이드 체크
-  7. OpenWrt 공식 사이트에서 다운로드 받은 파일(~kernel.bin)을 선택 후 업그레이드
-  8. OpenWrt 공식 사이트에서 ipTime A8004T의 Firmware OpenWrt snapshot Upgrade URL을 복사
-  9. 원격 접속 프로그램(PowerShell, PuTTy 등) 실행 후 ssh root@192.168.1.1로 접속
- 10. wget <복사한 URL> 입력
- 11. opkg update
- 12. opkg install luci
- 
-<Archer C7 AC1750 공유기 기준 OpenWrt 설치 방법>
-  1. 공유기 설치
-  2. OpenWrt 공식 사이트에서 Archer C7 AC1750의 OpenWrt Factory Firmware URL을 통해 해당 파일 다운로드(최신 버전 사용 권장)
-  3. http://tplinkwifi.net 접속
-  4. 고급 설정 시스템 도구에서 OpenWrt 공식 사이트에서 다운로드 받은 파일(~factory.bin)을 선택 후 펌웨어 업데이트
-  5. OpenWrt 공식 사이트에서 Archer C7 AC1750의 OpenWrt Sysupgrade Firmware URL을 복사
-  6. 원격 접속 프로그램(PowerShell, PuTTy 등) 실행 후 ssh root@192.168.1.1로 접속
-  7. wget <복사한 URL> 입력
-  8. opkg update
+
+● 프로젝트 목적
+
+WiFi 통신 기술은 가장 널리 사용되는 기술의 하나로써 대규모의 WiFi 공유기를 사용하는 환경에선 공유기를
+하나씩 따로 관리해야 하기 때문에 공유기의 관리가 어렵다. 또한 WiFi를 사용 하다보면 사용자가 많아 품질이
+좋지 않거나 과도하게 트래픽을 사용하는 사용자 때문에 WiFi를 원활하게 사용하지 못하는 경우가 종종 있기도
+하다. 따라서 공유기를 통합 관리해 품질 관리 및 보안 등 다양한 서비스를 구현하는 시스템을 구현하도록 했다.
+공유기 관리 및 유지보수를 위해 WiFi 공유기의 위치를 찾아내고, 사용자가 최적의 공유기에 연결될 수 있도록
+한다. 또한 과도하게 트래픽을 생성하는 사용자들은 차단하거나 제한하는 등 서비스를 제공하는 시스템을
+구현했다. 이런 기술은 대학교, 공고잇설과 같이 대규모의 WiFi 공유기를 사용하는 환경에선 공유기의 관리가
+대시보드로 이루어져 WiFi 공유기 관리 편의성을 높이고 사용자에게 더 좋은 품질의 통신을 제공한다
