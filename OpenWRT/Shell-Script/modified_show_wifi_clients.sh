@@ -35,10 +35,8 @@ do
       tp=`iw dev wlan0 station get $mac | grep "tx packets:" | cut -f 2 -s -d" " | cut -f 2`
       et=`iwinfo $interface assoclist | grep -A $((num+2)) $mac | grep expected | cut -f 3 -s -d" "`
       # ... show the mac address with RX, TX info and expected throughput:
-      echo -e "  No.\tIP address\t\tname\t\t\tMAC address\t\tRX\t\tTX"
-      echo -e "  $num\t$ip\t\t$host\t$mac\t$rx MBits/s\t$tx MBits/s\n"
-      echo -e "        RX bytes\tRX packets\tTX bytes\tTx packets\t Expected throughput"
-      echo -e "\t$rb\t\t$rp\t\t$tb\t\t$tp\t\t $et Mbps\n"
+      echo -e "  IP address\t\tname\t\t\tMAC address\t\tRX\t\tTX\t\tRX bytes\tRX packets\tTX bytes\tTx packets\t Expected throughput"
+      echo -e "  $ip\t\t$host\t$mac\t$rx MBits/s\t$tx MBits/s\t$rb\t$rp\t\t$tb\t$tp\t\t $et Mbps"
       # If file which saves MAC address does not exist,
       # make one and save MAC address
       check_mac=1
@@ -63,7 +61,6 @@ do
       if [ $check_mac -eq 1 ]; then
         echo $mac >> maclist.txt
       fi
-      let num=$((num+1))
     done
   done
   sleep 1
