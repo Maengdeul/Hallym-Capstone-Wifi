@@ -5,7 +5,6 @@ if [ $(id -u) -ne 0 ]; then exec sudo bash "$0" "$@"; exit; fi
 
 #Change directory to usb devices.
 cd /sys/bus/usb/devices
-ls
 
 #Find device's ID number what you want to remove
 device_id=`lsusb | grep -e GEMBIRD | cut -c 24-27`
