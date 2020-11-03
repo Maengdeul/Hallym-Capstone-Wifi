@@ -8,7 +8,7 @@ cd /sys/bus/usb/devices
 ls
 
 #Find device's ID number what you want to remove
-device_id=`lsusb | grep -e Logitech | cut -c 24-27`
+device_id=`lsusb | grep -e GEMBIRD | cut -c 24-27`
 
 #Find device's directory
 grep_directory=`grep ${device_id} */idVendor | cut -d"/" -f 1`
