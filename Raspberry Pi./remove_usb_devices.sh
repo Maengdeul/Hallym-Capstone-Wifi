@@ -3,7 +3,7 @@
 #Run script as root
 if [ $(id -u) -ne 0 ]; then exec sudo bash "$0" "$@"; exit; fi
 
-#Change Directory to usb devices.
+#Change directory to usb devices.
 cd /sys/bus/usb/devices
 ls
 
