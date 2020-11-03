@@ -8,12 +8,11 @@ echo -e
 echo    "# All connected wifi devices, with IP address,"
 echo    "# hostname (if available), MAC address, RX/TX info, and Expected throughput"
 
-num=1
-
 # list all wireless network interfaces
 # (for universal driver; see wiki article for alternative commands)
 while :
 do
+  num=1
   for interface in `iwinfo | grep ESSID | cut -f 1 -s -d" "`
   do
     # for each interface, get mac addresses of connected stations/clients
