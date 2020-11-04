@@ -25,9 +25,9 @@ do
   done
 done
 if [ "$cnt" -eq 1 ] ; then
-  echo -e "1 client has been banned(RX=$rx, limit=$rx_limit)"
+  echo -e "1 client has been banned(RX=$rx, limit=$1 , $2)"
 elif [ "$cnt" -gt 1 ] ; then
-  echo -e "$cnt clients have been banned(RX=$rx, limit=$rx_limit)"
+  echo -e "$cnt clients have been banned(RX=$rx, limit=$1 , $2)"
 elif [ "$cnt" -eq 0 ] ; then
-  echo -e "No client has been banned(limit=$rx_limit)"
+  echo -e "No client has been banned(limit=$1 , $2)"
 fi
