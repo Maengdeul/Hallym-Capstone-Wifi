@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# /etc/config/ban_clients.sh
+# /etc/config/ban_clients_threshold.sh
 # Set the limit, ban time and ban clients who over the limit
 
 # list all wireless network interfaces
