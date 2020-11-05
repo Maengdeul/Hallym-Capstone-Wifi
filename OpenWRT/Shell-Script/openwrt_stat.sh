@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# /etc/config/modified_show_wifi_clients.sh
+# /etc/config/openwrt_stat.sh
 # Shows MAC, IP address, RX/TX and any hostname info for all connected wifi devices
 # written for openwrt 12.09 Attitude Adjustment
 
