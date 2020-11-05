@@ -21,10 +21,10 @@ do
 
   if [ $flag == 1 ] ; then
     /home/pi/rud.sh 1> /dev/null
-    xmessage -buttons OK:0 -nearmouse "Logitech devices off" -timeout 5 2> /dev/null
+    xmessage -buttons OK:0 -title "[Wimon] Security Alarm" -nearmouse "Camera off" -timeout 5 2> /dev/null
   elif [ $flag == 0 ] ; then
     /home/pi/lud.sh 1> /dev/null
-    xmessage -buttons Ok:0 -default Ok -nearmouse "Logitech devices on" -timeout 5 2> /dev/null
+    xmessage -buttons Ok:0 -title "[Wimon] Security Alarm" -default Ok -nearmouse "Logitech devices on" -timeout 5 2> /dev/null
   fi
 
   sleep 5
