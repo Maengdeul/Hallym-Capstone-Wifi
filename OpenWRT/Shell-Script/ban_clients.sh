@@ -13,7 +13,7 @@ do
   for mac in $maclist
   do
   #Found match MAC address to ban
-    if [ $1 = ${mac} ]; then
+    if [ $1 == $mac ]; then
       ubus call hostapd.$interface del_client "{'addr':'$mac','reason':0,'deauth':false,'ban_time':500}"
       echo "client banned"
     fi
