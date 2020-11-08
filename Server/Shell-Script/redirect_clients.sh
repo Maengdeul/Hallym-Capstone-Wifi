@@ -7,7 +7,7 @@
 # list all wireless network interfaces
 
 list=`iwinfo | grep ESSID | cut -f 1 -s -d" "`
-mlist="" # fill it up with your AP's MAC address
+mlist="" # Write your AP's MAC address
 
 for interface in $list
 do
