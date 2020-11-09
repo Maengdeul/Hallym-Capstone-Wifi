@@ -27,11 +27,11 @@ do
       ip=`cat /tmp/dhcp.leases | cut -f 2,3,4 -s -d" " | grep -i $mac | cut -f 2 -s -d" "`
       host=`cat /tmp/dhcp.leases | cut -f 2,3,4 -s -d" " | grep -i $mac | cut -f 3 -s -d" "`
       rx=`iwinfo $interface assoclist | grep -A $num $mac | grep RX | cut -f 2 -s -d" "`
-      rb=`iw dev wlan0 station get $mac | grep "rx bytes:" | cut -f 2 -s -d" " | cut -f 2`
-      rp=`iw dev wlan0 station get $mac | grep "rx packets:" | cut -f 2 -s -d" " | cut -f 2`
+      rb=`iw dev $interface station get $mac | grep "rx bytes:" | cut -f 2 -s -d" " | cut -f 2`
+      rp=`iw dev $interface station get $mac | grep "rx packets:" | cut -f 2 -s -d" " | cut -f 2`
       tx=`iwinfo $interface assoclist | grep -A $((num+1)) $mac | grep TX | cut -f 2 -s -d" "`
-      tb=`iw dev wlan0 station get $mac | grep "tx bytes:" | cut -f 2 -s -d" " | cut -f 2`
-      tp=`iw dev wlan0 station get $mac | grep "tx packets:" | cut -f 2 -s -d" " | cut -f 2`
+      tb=`iw dev $interface station get $mac | grep "tx bytes:" | cut -f 2 -s -d" " | cut -f 2`
+      tp=`iw dev $interface station get $mac | grep "tx packets:" | cut -f 2 -s -d" " | cut -f 2`
       et=`iwinfo $interface assoclist | grep -A $((num+2)) $mac | grep expected | cut -f 3 -s -d" "`
       # ... show the mac address with RX, TX info and expected throughput:
       echo -e "  IP address\t\tname\t\t\tMAC address\t\tRX\t\tTX\t\tRX bytes\tRX packets\tTX bytes\tTX packets\t Expected throughput"
