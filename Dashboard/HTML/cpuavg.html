@@ -1,0 +1,104 @@
+<html>
+<head>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<body>
+
+  <script type="text/javascript">
+  
+  google.charts.load('current', {
+    callback: function () {
+  
+    
+      drawChart();
+      setInterval(drawChart, 10000);
+  
+
+      function drawChart() {
+        $.ajax({
+            url: 'cpu_averagevalue.txt',
+            type: 'get',
+            async: true,
+            success: function (txt)	{
+	setTimeout(function(){
+                  location.reload();
+                },10000);
+
+
+          var txtArray = txt.split('\n');    	
+  	console.log(txtArray);
+   
+   //텍스트 값 ajax로 불러오기
+   var dataArray = [];
+                 var txtArray = txt.split('\n');
+                   for (var i = 0; i < txtArray.length-1; i++) {
+                    var tmpData = txtArray[i].split(/\s+/);
+
+dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),
+                                        parseInt(tmpData[2]),parseInt(tmpData[3]),
+                                    parseInt(tmpData[4]),parseFloat(tmpData[5]),
+                                    parseFloat(tmpData[6]),parseFloat(tmpData[7]),parseFloat(tmpData[8])
+
+                                    ]);
+
+				
+                        }
+
+  		console.log(dataArray[0][0]);		
+      //dataarray에 txt값 넣기
+      
+  
+      
+  var data = new google.visualization.DataTable();
+  		data.addColumn('datetime','Date');
+  		data.addColumn('number','use');
+  		data.addColumn('number','sys');
+	        data.addColumn('number','idle');
+  
+  		for(i=0; i <(dataArray.length);i++){
+  			data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] )
+  				,(dataArray[i][6]),(dataArray[i][7] ),(dataArray[i][8] )   ] );
+  		}
+  		
+  		var options = {
+  			title: 'cpuavg ',
+            		//curveType: 'function',
+  	          legend: { position: 'bottom' },
+          	  hAxis:  {format:'yy/M/dd'},
+  	          width: 500,
+  	          height: 500,
+  	          explorer: {axis: 'horizontal', keepInBounds: true}
+  	        };
+  
+          	var chart = new google.visualization.LineChart(document.getElementById('cpuavg'));
+  
+  	        chart.draw(data, options);
+          
+  	        }
+  
+           //   $(ajax).remove();
+        
+        
+        });
+      
+      
+      
+      }
+  
+  
+  
+  
+    },
+    packages: ['corechart']
+  });
+  
+  </script>
+
+  
+<div id="cpuavg"></div>
+</body>
+</head>
+</html>
