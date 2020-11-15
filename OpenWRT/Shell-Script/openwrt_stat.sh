@@ -1,3 +1,10 @@
+#!/bin/sh
+
+# /etc/config/openwrt_stat.sh
+# Shows MAC, IP address, RX/TX and any hostname info for all connected wifi devices
+# written for openwrt 12.09 Attitude Adjustment
+
+#echo -e
 #echo    "# All connected wifi devices, with IP address,"
 #echo    "# hostname (if available), MAC address, RX/TX info, and Expected throughput"
 
