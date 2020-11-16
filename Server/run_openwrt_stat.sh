@@ -30,7 +30,6 @@ do
         #get data from remote machine and print to the terminal
         ssh -p 1818 root@211.210.92.69 /etc/config/openwrt_stat.sh > openwrt2.txt  2>&1
 
-        #▒▒▒▒▒ ▒▒▒▒▒ ▒▒▒ ▒▒▒ DB▒▒ ▒▒▒▒▒▒▒ ▒ʴ´▒.
         if test -f "openwrt1.txt"; then
                 openwrt2=$(<openwrt2.txt)
 
