@@ -4,7 +4,7 @@ while :
 do
 	#OpenWRT1
 	#get data from remote machine and print to the terminal
-	ssh root@211.210.92.69 /etc/config/openwrt_stat.sh > openwrt1.txt 2>&1
+	ssh root@211.210.92.69 /etc/config/openwrt_stat.sh > /var/www/html/openwrt1.txt 2>&1
 	
 	if test -f "openwrt1.txt"; then
 		openwrt1=$(<openwrt1.txt)
@@ -28,7 +28,7 @@ do
 
 	#OpenWRT2
 	#get data from remote machine and print to the terminal
-	ssh -p 1818 root@211.210.92.69 /etc/config/openwrt_stat.sh > openwrt2.txt  2>&1
+	ssh -p 1818 root@211.210.92.69 /etc/config/openwrt_stat.sh > /var/www/html/openwrt2.txt  2>&1
 	
 	#연결된 목록이 없는 경우 DB에 출력하지 않는다.
 	if test -f "openwrt1.txt"; then
@@ -55,7 +55,7 @@ do
 
 	#OpenWRT3
 	#get data from remote machine and print to the terminal
-	ssh root@116.42.53.54 -p12333 test/openwrt_stat.sh > openwrt3.txt  2>&1
+	ssh root@116.42.53.54 -p12333 test/openwrt_stat.sh > /var/www/html/openwrt3.txt  2>&1
 		
 	if test -f "openwrt1.txt"; then
 		openwrt3=$(<openwrt3.txt)
@@ -83,7 +83,7 @@ do
 
 	#OpenWRT4
 	#get data from remote machine and print to the terminal
-	ssh root@116.42.53.54 -p12334 test/openwrt_stat.sh > openwrt4.txt 2>&1
+	ssh root@116.42.53.54 -p12334 test/openwrt_stat.sh > /var/www/html/openwrt4.txt 2>&1
 	
 	if test -f "openwrt1.txt"; then
 		openwrt4=$(<openwrt4.txt)
