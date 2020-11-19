@@ -20,7 +20,7 @@ do
   done
 
   if [ $flag == 1 ] ; then
-    /home/pi/rud.sh 1> /dev/null
+    /home/pi/remove_webcam.sh 1> /dev/null
     xmessage -buttons OK:0 -title "[Wimon] Security Alarm" -nearmouse "Camera off" -timeout 5 2> /dev/null
   elif [ $flag == 0 ] ; then
     /home/pi/lud.sh 1> /dev/null
