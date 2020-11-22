@@ -19,11 +19,16 @@ do
     # if client's rx over rx_limit(first argument) or tx_limit(second argument) ban the client
     if [ $rx -ge $1 ] || [ $tx -ge $2  ] ; then
       ubus call hostapd.$interface del_client "{'addr':'$mac','reason':5,'deauth':false,'ban_time':10000}"
+      uci set wireless.default_radio1.macfilter=deny
+      uci add_list wireless.default_radio1.maclist=$1
+      uci commit wireless
+      luci-reload
       echo -e "$((cnt+1)). $host has been banned"
       cnt=$((cnt+1))
     fi
   done
 done
+
 if [ "$cnt" -eq 1 ] ; then
   echo -e "1 client has been banned(RX=$rx, TX=$tx, RX/TX limit=$1, $2)"
 elif [ "$cnt" -gt 1 ] ; then
@@ -31,3 +36,10 @@ elif [ "$cnt" -gt 1 ] ; then
 elif [ "$cnt" -eq 0 ] ; then
   echo -e "No client has been banned(RX/TX limit=$1, $2)"
 fi
+
+sleep 1m
+
+uci del wireless.default_radio1.macfilter
+uci del wireless.default_radio1.maclist
+uci commit wireless
+luci-reload
