@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Check openWRT1 memory status
 
 while :
 do
