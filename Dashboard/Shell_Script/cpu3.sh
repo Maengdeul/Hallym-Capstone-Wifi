@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#List of devices connected to openWRT2
+#List of devices connected to openWRT3
 
 	# get data from remote machine
 	value=`ssh -p 12333 root@192.168.31.86 top -n 1 | head -2 | tail -1`
