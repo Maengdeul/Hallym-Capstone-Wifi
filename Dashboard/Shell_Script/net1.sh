@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Get the RX and TX values of openWRT1 
+
 while : 
 do
 	# get data from remote machine
