@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# how to use
-# 1) ./get-renite-data.sh > file.txt
-# 2) read file.txt in the xxx.html 
-# 3) use the data from file.txt to draw charts 
+#List of devices connected to openWRT2
 
 	# get data from remote machine
 	value=`ssh root@192.168.31.202 top -n 1 | head -2 | tail -1`
