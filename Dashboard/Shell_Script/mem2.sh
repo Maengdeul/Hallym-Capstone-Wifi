@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Check openWRT1 memory status
+#Check openWRT2 memory status
 
 	# get data from remote machine
 	mem=`ssh root@192.168.31.52 free -m | head -2 | tail -1 | awk '{print $2,$3}'`
