@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html>
+	<link rel="icon" type="image/x-icon" href="https://www.hallym.ac.kr/.resources/hallym_univ_theme/hallym/ko/img/abouthallym/symbol-ui-mark.png">
+
+	<head lang="en">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<title>Charts</title>
+		<h1 style="color: peru; font-family:verdana; font-size: 200%; text-align:center; ">Capstone-WiFi</h1>
+		<p style="color: peru; font-family:verdana; font-size: 150%; text-align:center; ">WiMon 2020-2</p>
+		<div style="position:absolute; left: 700px; bottom: -900px; font-size: 100%">2020©강동우,권지우, 김영임, 이하은, 허재웅</div>
+		<div style="position:absolute; left:400px; bottom:-360px; font-size: 125%">네트워크 구성</div>
+		<div style="position:absolute; right:300px; bottom:-360px; font-size: 130%;">devices list</div>
+	</body>
+</html>
+
+
+<html>
+	<head>
+
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+	<body>
+
+	<script type="text/javascript">
+
+		google.charts.load('current', {'packages':['table']});
+      	 	google.charts.setOnLoadCallback(drawTable);
+
+		function openPop(){
+			window.open("https://funshop.akamaized.net//products/0000094254/vs_image800.jpg?1606200300", "startpop", "top=0, left=0, width=800, height=500, scrollbars=no, resizable=no ,status=no ,toolbar=no");
+		}
+		function openPop2(){
+			window.open("https://funshop.akamaized.net//products/0000094254/vs_image800.jpg?1606200300", "startpop", "top=0, left=0, width=800, height=500, scrollbars=no, resizable=no ,status=no ,toolbar=no");
+		}
+		function openPop3(){
+			window.open("https://funshop.akamaized.net//products/0000094254/vs_image800.jpg?1606200300", "startpop", "top=0, left=0, width=800, height=500, scrollbars=no, resizable=no ,status=no ,toolbar=no");
+		}
+		function openPop4(){
+			window.open("https://funshop.akamaized.net//products/0000094254/vs_image800.jpg?1606200300", "startpop", "top=0, left=0, width=800, height=500, scrollbars=no, resizable=no ,status=no ,toolbar=no");
+		}
+
+        	function drawTable() {
+			var data = new google.visualization.DataTable();
+        		data.addColumn('string', 'Name');
+			data.addColumn('string', 'openwrt ip');
+        		data.addColumn('string', 'link');
+        		data.addRows([
+          			['openwrt1' ,'192.168.31.202', '<a href="javascript:openPop()">click</a>'],
+          			['openwrt2' ,'192.168.31.52', '<a href="javascript:openPop2()">click</a>'],
+	  			['openwrt3' ,'192.168.31.86', '<a href="javascript:openPop3()">click</a>'],
+	  			['openwrt4' ,'192.168.31.80', '<a href="javascript:openPop4()">click</a>']
+	 		]);
+
+        		var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        		table.draw(data, {allowHtml:true,showRowNumber: true, width: '300', height: '250',title:'open'});
+      		}
+
+
+
+
+
+
+
+		google.charts.load('current', {
+			callback: function () {
+				drawChart();
+				setInterval(drawChart, 500);
+				function drawChart() {
+
+
+						$.ajax({ //ajax 1
+						url: 'cpu1.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7]),parseFloat(tmpData[8])]);
+							}//for
+
+					$.ajax({ //ajax 2
+						url: 'cpu_averagevalue1.txt',
+						type: 'get',
+              			  		async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7]),parseFloat(tmpData2[8])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							//console.log(dataArray2[0][2]);
+							//console.log(dataArray2[0][3]);
+
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','use');
+							data.addColumn('number','sys');
+							data.addColumn('number','idle');
+							data.addColumn('number','use avg');
+							data.addColumn('number','sys avg');
+							data.addColumn('number','idle avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray[i][8],dataArray2[i][0],dataArray2[i][1],dataArray2[i][2]  ] );
+							}
+
+							var options = {
+								title:   'openwrt1  cpu 사용량   ',
+								legend: { position: 'bottom' },
+								hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'%'},
+								chartArea: {left: 50},
+							//	width: 700,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt1_cpu'));
+							chart.draw(data, options);
+						}//success
+					})//ajax2
+						}//success
+					});//ajax
+
+
+
+					//2. memtotal
+					$.ajax({
+						url: 'mem1.txt',
+						type: 'get',
+						async: true,
+			          		success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							}//for
+
+					$.ajax({//mem ajax2
+						url: 'mem_averagevalue1.txt',
+						type: 'get',
+						async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','total');
+			                    		data.addColumn('number','used');
+							data.addColumn('number','total avg');
+							data.addColumn('number','used avg');
+
+							for(i=0; i <(dataArray2.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: ' openwrt1 memory 사용량',
+								//curveType: 'function',
+								legend: { position: 'bottom' },
+	 							hAxis:  {format:'yy/M/dd'},
+	 							vAxis:{title:'MB'},
+								chartArea: {left: 70, right:0},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt1_mem'));
+							chart.draw(data, options);
+						}//success
+					})//mem ajax2
+						}
+					});//mem ajax1
+
+
+
+					//3. net total
+					$.ajax({
+						url: 'net1.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							} //for
+                 			$.ajax({
+		                   		url: 'net_averagevalue1.txt',
+		                   		type: 'get',
+                		   		async: true,
+		                   		success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+
+                       					var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','RX');
+							data.addColumn('number','TX');
+							data.addColumn('number','RX avg');
+							data.addColumn('number','TX avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'openwrt1 net 사용량',
+                                 				curveType: 'function',
+                       	          				legend: { position: 'bottom' },
+                               	  				hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'bps',
+									ticks: [{v:50000000000, f:'50G'},
+										{v:40000000000, f:'40G'},
+										{v:30000000000, f:'30G'},
+										{v:20000000000, f:'20G'},
+										{v:10000000000, f:'10G'}]},
+								chartArea: { left: 50, right:30},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt1_net'));
+							chart.draw(data, options);
+						}//success
+					})// net ajax2
+						}});//net ajax1
+
+
+
+
+
+						$.ajax({ //ajax 1
+						url: 'cpu2.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7]),parseFloat(tmpData[8])]);
+							}//for
+
+					$.ajax({ //ajax 2
+						url: 'cpu_averagevalue2.txt',
+						type: 'get',
+              			  		async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7]),parseFloat(tmpData2[8])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							//console.log(dataArray2[0][2]);
+							//console.log(dataArray2[0][3]);
+
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','use');
+							data.addColumn('number','sys');
+							data.addColumn('number','idle');
+							data.addColumn('number','use avg');
+							data.addColumn('number','sys avg');
+							data.addColumn('number','idle avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray[i][8],dataArray2[i][0],dataArray2[i][1],dataArray2[i][2]  ] );
+							}
+
+							var options = {
+								title:   'openwrt2  cpu 사용량   ',
+								legend: { position: 'bottom' },
+								hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'%'},
+								chartArea: {left: 50},
+							//	width: 700,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt2_cpu'));
+
+							chart.draw(data, options);
+						}//success
+					})//ajax2
+						}//success
+					});//ajax
+
+
+
+					//2. memtotal
+					$.ajax({
+						url: 'mem2.txt',
+						type: 'get',
+						async: true,
+			          		success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							}//for
+
+					$.ajax({//mem ajax2
+						url: 'mem_averagevalue2.txt',
+						type: 'get',
+						async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','total');
+			                    		data.addColumn('number','used');
+							data.addColumn('number','total avg');
+							data.addColumn('number','used avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'openwrt2 memory 사용량',
+								//curveType: 'function',
+								legend: { position: 'bottom' },
+	 							hAxis:  {format:'yy/M/dd'},
+	 							vAxis:{title:'MB'},
+								chartArea: {left: 70, right:0},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt2_mem'));
+							chart.draw(data, options);
+						}//success
+					})//mem ajax2
+						}
+					});//mem ajax1
+
+
+
+					//3. net total
+					$.ajax({
+						url: 'net2.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							} //for
+                 			$.ajax({
+		                   		url: 'net_averagevalue2.txt',
+		                   		type: 'get',
+                		   		async: true,
+		                   		success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+
+                       					var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','RX');
+							data.addColumn('number','TX');
+							data.addColumn('number','RX avg');
+							data.addColumn('number','TX avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'opwnrt2 net 사용량',
+                                 				curveType: 'function',
+                       	          				legend: { position: 'bottom' },
+                               	  				hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'bps',
+									ticks: [{v:50000000000, f:'50G'},
+										{v:40000000000, f:'40G'},
+										{v:30000000000, f:'30G'},
+										{v:20000000000, f:'20G'},
+										{v:10000000000, f:'10G'}]},
+								chartArea: { left: 50, right:30},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt2_net'));
+							chart.draw(data, options);
+						}//success
+					})// net ajax2
+						}});//net ajax1
+
+
+					//1. cputotal
+					$.ajax({ //ajax 1
+						url: 'cpu3.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7]),parseFloat(tmpData[8])]);
+							}//for
+
+					$.ajax({ //ajax 2
+						url: 'cpu_averagevalue3.txt',
+						type: 'get',
+              			  		async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7]),parseFloat(tmpData2[8])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							//console.log(dataArray2[0][2]);
+							//console.log(dataArray2[0][3]);
+
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','use');
+							data.addColumn('number','sys');
+							data.addColumn('number','idle');
+							data.addColumn('number','use avg');
+							data.addColumn('number','sys avg');
+							data.addColumn('number','idle avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray[i][8],dataArray2[i][0],dataArray2[i][1],dataArray2[i][2]  ] );
+							}
+
+							var options = {
+								title:   'openwrt3  cpu 사용량   ',
+								legend: { position: 'bottom' },
+								hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'%'},
+								chartArea: {left: 50},
+							//	width: 700,
+							//	height:1000,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt3_cpu'));
+							chart.draw(data, options);
+						}//success
+					})//ajax2
+						}//success
+					});//ajax
+
+
+
+					//2. memtotal
+					$.ajax({
+						url: 'mem3.txt',
+						type: 'get',
+						async: true,
+			          		success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							}//for
+
+					$.ajax({//mem ajax2
+						url: 'mem_averagevalue3.txt',
+						type: 'get',
+						async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','total');
+			                    		data.addColumn('number','used');
+							data.addColumn('number','total avg');
+							data.addColumn('number','used avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'opewrt3 memory 사용량',
+								//curveType: 'function',
+								legend: { position: 'bottom' },
+	 							hAxis:  {format:'yy/M/dd'},
+	 							vAxis:{title:'MB'},
+								chartArea: {left: 70, right:0},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt3_mem'));
+							chart.draw(data, options);
+						}//success
+					})//mem ajax2
+						}
+					});//mem ajax1
+
+
+
+					//3. net total
+					$.ajax({
+						url: 'net3.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+							 	dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							} //for
+                 			$.ajax({
+		                   		url: 'net_averagevalue3.txt',
+		                   		type: 'get',
+                		   		async: true,
+		                   		success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+
+                       					var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','RX');
+							data.addColumn('number','TX');
+							data.addColumn('number','RX avg');
+							data.addColumn('number','TX avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'openwrt3 net 사용량',
+              	curveType: 'function',
+              	legend: { position: 'bottom' },
+                hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'bps',
+									ticks: [{v:50000000000, f:'50G'},
+										{v:40000000000, f:'40G'},
+										{v:30000000000, f:'30G'},
+										{v:20000000000, f:'20G'},
+										{v:10000000000, f:'10G'}]},
+								chartArea: { left: 50, right:30},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt3_net'));
+							chart.draw(data, options);
+						}//success
+					})// net ajax2
+						}});//net ajax1
+
+					$.ajax({ //ajax 1
+						url: 'cpu4.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7]),parseFloat(tmpData[8])]);
+							}//for
+
+					$.ajax({ //ajax 2
+						url: 'cpu_averagevalue4.txt',
+						type: 'get',
+              			  		async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7]),parseFloat(tmpData2[8])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							//console.log(dataArray2[0][2]);
+							//console.log(dataArray2[0][3]);
+
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','use');
+							data.addColumn('number','sys');
+							data.addColumn('number','idle');
+							data.addColumn('number','use avg');
+							data.addColumn('number','sys avg');
+							data.addColumn('number','idle avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray[i][8],dataArray2[i][0],dataArray2[i][1],dataArray2[i][2]  ] );
+							}
+
+							var options = {
+								title:   'openwrt4  cpu 사용량   ',
+								legend: { position: 'bottom' },
+								hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'%'},
+								chartArea: {left: 50},
+							//	width: 700,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt4_cpu'));
+							chart.draw(data, options);
+						}//success
+					})//ajax2
+						}//success
+					});//ajax
+
+
+
+					//2. memtotal
+					$.ajax({
+						url: 'mem4.txt',
+						type: 'get',
+						async: true,
+			          		success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							}//for
+
+					$.ajax({//mem ajax2
+						url: 'mem_averagevalue4.txt',
+						type: 'get',
+						async: true,
+						success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+							var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','total');
+			                    		data.addColumn('number','used');
+							data.addColumn('number','total avg');
+							data.addColumn('number','used avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'openwrt4 memory 사용량',
+								//curveType: 'function',
+								legend: { position: 'bottom' },
+	 							hAxis:  {format:'yy/M/dd'},
+	 							vAxis:{title:'MB'},
+								chartArea: {left: 70, right:0},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt4_mem'));
+							chart.draw(data, options);
+						}//success
+					})//mem ajax2
+						}
+					});//mem ajax1
+
+
+
+					//3. net total
+					$.ajax({
+						url: 'net4.txt',
+						type: 'get',
+						async: true,
+						success: function (txt){
+							var txtArray = txt.split('\n');
+							//console.log(txtArray);
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+							var txtArray = txt.split('\n');
+							for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([parseInt(tmpData[0]), parseInt(tmpData[1]),parseInt(tmpData[2]),
+									parseInt(tmpData[3]),parseInt(tmpData[4]),parseFloat(tmpData[5]),
+									parseFloat(tmpData[6]),parseFloat(tmpData[7])]);
+							} //for
+                 			$.ajax({
+		                   		url: 'net_averagevalue4.txt',
+		                   		type: 'get',
+                		   		async: true,
+		                   		success: function (txt2){
+							var txtArray2 = txt2.split('\n');
+							var dataArray2=[];
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData2 = txtArray2[i].split(/\s+/);
+								dataArray2.push([  parseFloat(tmpData2[6]),parseFloat(tmpData2[7])]);
+							}//for
+
+							//console.log(dataArray2[0][1]);
+
+                       					var data = new google.visualization.DataTable();
+							data.addColumn('datetime','Date');
+							data.addColumn('number','RX');
+							data.addColumn('number','TX');
+							data.addColumn('number','RX avg');
+							data.addColumn('number','TX avg');
+
+							for(i=0; i <(dataArray.length);i++){
+								data.addRow( [new Date( dataArray[i][0],dataArray[i][1]-1,dataArray[i][2],dataArray[i][3],dataArray[i][4],dataArray[i][5] ),
+									(dataArray[i][6]),(dataArray[i][7]),dataArray2[i][0],dataArray2[i][1]  ] );
+							}
+
+							var options = {
+								title: 'openwrt4 net 사용량',
+                                 				curveType: 'function',
+                       	          				legend: { position: 'bottom' },
+                               	  				hAxis:  {format:'yy/M/dd'},
+								vAxis: {title:'bps',
+									ticks: [{v:50000000000, f:'50G'},
+										{v:40000000000, f:'40G'},
+										{v:30000000000, f:'30G'},
+										{v:20000000000, f:'20G'},
+										{v:10000000000, f:'10G'}]},
+								chartArea: { left: 50, right:30},
+							//	width: 650,
+							//	height: 600,
+								explorer: {axis: 'horizontal', keepInBounds: true}
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('openwrt4_net'));
+							chart.draw(data, options);
+						}//success
+					})// net ajax2
+						}});//net ajax1
+
+
+
+
+
+
+					//4. org
+					$.ajax({
+						url: 'openwrt1.txt',
+		            			type: 'get',
+		            			async: true,
+		            			success: function (txt)	{
+							var txtArray = txt.split('\n');
+
+							//텍스트 값 ajax로 불러오기
+							var dataArray = [];
+		                 			var txtArray = txt.split('\n');
+		                   			for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+								dataArray.push([ tmpData[1],tmpData[2]  ]);
+							}
+
+	          			$.ajax({
+						url: 'openwrt2.txt',
+			        		type: 'get',
+		            			async: true,
+		            			success: function (txt){
+							var txtArray2 = txt.split('\n');
+							var dataArray2 = [];
+							var txtArray2 = txt.split('\n');
+							for (var i = 0; i < txtArray2.length-1; i++){
+								var tmpData = txtArray2[i].split(/\s+/);
+								dataArray2.push([ tmpData[1],tmpData[2]  ]);
+							}//for
+
+              				$.ajax({
+						url: 'openwrt3.txt',
+                				type: 'get',
+                				async: true,
+                				success: function (txt){
+							var txtArray3 = txt.split('\n');
+							var dataArray3 = [];
+                  					var txtArray3 = txt.split('\n');
+                  					for (var i = 0; i < txtArray3.length-1; i++){
+								var tmpData = txtArray3[i].split(/\s+/);
+								dataArray3.push([ tmpData[1],tmpData[2]  ]);
+							}
+
+                   			$.ajax({
+                     				url: 'openwrt4.txt',
+                     				type: 'get',
+                    	 			async: true,
+                     				success: function (txt){
+							var txtArray4 = txt.split('\n');
+							var dataArray4 = [];
+                       					var txtArray4 = txt.split('\n');
+                       					for (var i = 0; i < txtArray4.length-1; i++){
+								var tmpData = txtArray4[i].split(/\s+/);
+								dataArray4.push([ tmpData[1],tmpData[2]  ]);
+							}
+							var data = new google.visualization.DataTable();
+                      					data.addColumn('string','name');
+                      					data.addColumn('string','add');
+                      					data.addRow([ 'Root','Root' ]);
+                      					data.addRow([ 'openwrt1','Root' ] );
+                      					data.addRow([ 'openwrt2', 'Root'] );
+                      					data.addRow([ 'openwrt3', 'Root'] );
+                      					data.addRow([ 'openwrt4', 'Root'] );
+                      					for(i=0; i <(dataArray.length);i++){
+								if(dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] == undefined){
+									data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+									data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+								}
+                            					else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] == undefined){
+									data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                            					}
+								else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+									data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+									data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+									data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+								}
+								else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+									data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+									data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+								}
+								else if(dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                              						data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+									data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+									data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+									data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+                            					}
+                            					else if (dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] != undefined) {
+                              						data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+								}
+								else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                              						data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+								}
+								else if (dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] != undefined) {
+                              						data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                             	 					data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+                            					}
+                            					else if (dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] == undefined) {
+                              						data.addRow([ dataArray[i][0].toString(),'openwrt1'] );
+                              						data.addRow( [dataArray[i][1].toString(),dataArray[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+								}
+                            					else if(dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+                            					}
+								else if (dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] != undefined) {
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+                            					}
+								else if (dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined) {
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+                            					}
+                            					else if (dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] == undefined) {
+                              						data.addRow([ dataArray2[i][0].toString(),'openwrt2'] );
+                              						data.addRow( [dataArray2[i][1].toString(),dataArray2[i][0].toString()] );
+								}
+                            					else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] != undefined) {
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+								}
+                            					else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] == undefined) {
+                              						data.addRow([ dataArray3[i][0].toString(),'openwrt3'] );
+                              						data.addRow( [dataArray3[i][1].toString(),dataArray3[i][0].toString()] );
+								}
+                            					else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] != undefined) {
+                              						data.addRow([ dataArray4[i][0].toString(),'openwrt4'] );
+                              						data.addRow( [dataArray4[i][1].toString(),dataArray4[i][0].toString()] );
+                            					}
+                           					else{
+                              						data.addRow([ '0','openwrt1'] );
+                              						data.addRow([ '0','openwrt2'] );
+                              						data.addRow([ '0','openwrt3'] );
+                              						data.addRow([ '0','openwrt4'] )
+								}
+							}//for
+							var chart = new google.visualization.OrgChart(document.getElementById('org'));
+							chart.draw(data, {'allowHtml':true, width:'900%', height:'300px' });
+						}//ajax4성공
+					})//ajax4
+						}//ajax3성공
+					})//ajax3
+						}//성공2{}
+					})//ajax2
+						}//ajax1성공
+					});//ajax1
+
+
+
+
+					//5. table
+					$.ajax({
+						url: 'openwrt1.txt',
+            					type: 'get',
+					        async: true,
+            					success: function (txt)	{
+							var txtArray = txt.split('\n');
+              						var dataArray = [];
+             						var txtArray = txt.split('\n');
+             						for (var i = 0; i < txtArray.length-1; i++) {
+								var tmpData = txtArray[i].split(/\s+/);
+                   						dataArray.push([ tmpData[0],tmpData[1]  ]);
+  							}
+          				$.ajax({
+						url: 'openwrt2.txt',
+            					type: 'get',
+			 	           	  async: true,
+			            		success: function (txt){
+							            var txtArray2 = txt.split('\n');
+              						var dataArray2 = [];
+              						var txtArray2 = txt.split('\n');
+              						for (var i = 0; i < txtArray2.length-1; i++){
+                    						var tmpData = txtArray2[i].split(/\s+/);
+                    						dataArray2.push([ tmpData[0],tmpData[1]  ]);
+
+                             				}//for
+
+
+              				$.ajax({
+                				url: 'openwrt3.txt',
+                				type: 'get',
+                				async: true,
+                				success: function (txt){
+                  					var txtArray3 = txt.split('\n');
+                  					var dataArray3 = [];
+                  					var txtArray3 = txt.split('\n');
+                  					for (var i = 0; i < txtArray3.length-1; i++){
+                        					var tmpData = txtArray3[i].split(/\s+/);
+                        					dataArray3.push([ tmpData[0],tmpData[1]  ]);
+                                  			}
+
+                   			$.ajax({
+                    	 			url: 'openwrt4.txt',
+                     				type: 'get',
+                     				async: true,
+                    	 			success: function (txt){
+                       					var txtArray4 = txt.split('\n');
+                       					var dataArray4 = [];
+                       					var txtArray4 = txt.split('\n');
+                       					for (var i = 0; i < txtArray4.length-1; i++){
+                            					var tmpData = txtArray4[i].split(/\s+/);
+                            					dataArray4.push([ tmpData[0],tmpData[1]  ]);
+                                      			}
+                        				var data = new google.visualization.DataTable();
+                                	 		data.addColumn('string','hostname');
+							                        data.addColumn('string','ip');
+
+                        				for(i=0; i <(dataArray.length);i++){
+                            					if(dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] == undefined){
+									                        data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                            					}
+                            					else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] == undefined){
+                              				  data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                             	 					data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                            					}
+                            					else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                            					else if(dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                            					else if(dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                            					else if (dataArray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] != undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                            					else if(dataarray[0]!=undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                            					else if (dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] != undefined){
+                             	 					data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                            					else if (dataArray[0]!=undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                              						data.addRow([dataArray[i][1].toString(),dataArray[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                            					else if(dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                            					else if(dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] != undefined){
+                                					data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                                					data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                          	 				else if (dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                              						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                           					else if (dataArray[0]==undefined && dataArray2[0] != undefined && dataArray3[0] == undefined && dataArray4[0] == undefined){
+                              						data.addRow([dataArray2[i][1].toString(),dataArray2[i][0].toString()]);
+                                				}
+                          					else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] != undefined){
+                            						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                            						data.addRow([dataArray4[i][1].toString(),dataArray4[i][0].toString()]);
+                              					}
+                         	 				else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] != undefined && dataArray4[0] == undefined){
+                            						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                          					else if (dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] != undefined){
+                            						data.addRow([dataArray3[i][1].toString(),dataArray3[i][0].toString()]);
+                              					}
+                       						/*else(dataArray[0]==undefined && dataArray2[0] == undefined && dataArray3[0] == undefined && dataArray4[0] == undefined)
+                                            				data.addRow(['0','0']);*/
+							}
+
+
+           						var chart = new google.visualization.Table(document.getElementById('table'));
+
+	 chart.draw(data,{ width: '200%', height: '190px'});
+						}
+					})//ajax4
+						}
+					})//ajax3
+						}
+					})//ajax2
+						}
+					});//ajax1
+
+
+
+
+
+
+
+
+		}//function drawchart()
+	}, //callback: function()
+	 packages: ['corechart','orgchart','table']
+}); // google.charts.load
+
+
+</script>
+<div id="openwrt1_cpu" style="
+	float: left;
+	width: 36%
+	"></div>
+<div id="openwrt1_mem" style="
+	float: left;
+	margin-left: 90px
+	width: 36%
+	"></div>
+<div id="openwrt1_net" style="
+	float: right;
+	width: 36%
+	"></div>
+<div id="openwrt2_cpu" style="
+	float: left;
+	width: 36%
+	"></div>
+<div id="openwrt2_mem" style="
+	float: left;
+	margin-left: 90px
+	width: 36%
+	"></div>
+<div id="openwrt2_net" style="
+	float: right;
+	width: 36%
+	"></div>
+
+<div id="openwrt3_cpu" style="
+    	float: left;
+	width: 36%
+    	" ></div>
+
+<div id="openwrt3_mem" style="
+	float: left;
+	margin-left: 90px
+	width: 40%
+	"></div>
+
+<div id="openwrt3_net" style="
+	float: right;
+	width: 36%
+	"></div>
+<div id="openwrt4_cpu" style="
+	float: left;
+	margin-left: 90px
+	width: 36
+	"></div>
+<div id="openwrt4_mem" style="
+	float: left;
+	width: 36%
+	"></div>
+<div id="openwrt4_net" style="
+	float: right;
+	width: 36%
+	"></div>
+<div id="org" style="
+	margin-top: 200px;
+	float: left;
+	height: 500px;
+	width: 60%;
+	"></div>
+<div id="table" style="
+	margin-top: 200px;
+	margin-bottom: 100px;
+	float: right;
+	width: 20%;
+	"></div>
+
+<div id="table_div" style="
+	margin-top: 200px;
+	margin-bottom: 100px;
+	float: right;
+	margin-right: 100px
+	width: 20%;
+	"></div>
+</body>
+</head>
+</html>
