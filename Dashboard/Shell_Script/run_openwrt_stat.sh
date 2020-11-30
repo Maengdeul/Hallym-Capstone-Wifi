@@ -4,7 +4,7 @@ while :
 do
 	#OpenWRT1
 	#get data from remote machine and print to the terminal
-	ssh root@211.210.92.69 /etc/config/openwrt_stat.sh > /var/www/html/openwrt1.txt 2>&1
+	ssh root@192.168.31.202 /etc/config/openwrt_stat.sh > device_1.txt 2>&1
 	
 	if test -f "openwrt1.txt"; then
 		openwrt1=$(<openwrt1.txt)
@@ -28,10 +28,10 @@ do
 
 	#OpenWRT2
 	#get data from remote machine and print to the terminal
-	ssh -p 1818 root@211.210.92.69 /etc/config/openwrt_stat.sh > /var/www/html/openwrt2.txt  2>&1
+	ssh root@192.168.31.52 /etc/config/openwrt_stat.sh > device_2.txt  2>&1
 	
 	#연결된 목록이 없는 경우 DB에 출력하지 않는다.
-	if test -f "openwrt1.txt"; then
+	if test -f "openwrt2.txt"; then
 		openwrt2=$(<openwrt2.txt)
 
 		# insert data into db
@@ -51,13 +51,14 @@ do
 			echo "INSERT INTO OpenWRT2 VALUE ('$ip_address', '$name', '$mac_address', '$rx', '$tx', '$rx_bytes','$rx_packets', '$tx_bytes', '$tx_packets', '$Expected_throughput');" | mysql -uwimon -pWiMon wimon
 
 		done < openwrt2.txt
-	fi	
+	fi
+
 
 	#OpenWRT3
 	#get data from remote machine and print to the terminal
-	ssh root@116.42.53.54 -p12333 test/openwrt_stat.sh > /var/www/html/openwrt3.txt  2>&1
+	ssh -p 12333 root@192.168.31.86 test/openwrt_stat.sh > device_3.txt 2>&1
 		
-	if test -f "openwrt1.txt"; then
+	if test -f "openwrt3.txt"; then
 		openwrt3=$(<openwrt3.txt)
 
 		# insert data into db
@@ -80,12 +81,11 @@ do
 
 	fi
 	
-
 	#OpenWRT4
 	#get data from remote machine and print to the terminal
-	ssh root@116.42.53.54 -p12334 test/openwrt_stat.sh > /var/www/html/openwrt4.txt 2>&1
+	ssh root@192.168.31.80 -p 12334 test/openwrt_stat.sh > device_4.txt 2>&1
 	
-	if test -f "openwrt1.txt"; then
+	if test -f "openwrt4.txt"; then
 		openwrt4=$(<openwrt4.txt)
 
 		# insert data into db
@@ -106,6 +106,10 @@ do
 
 		done < openwrt4.txt	
 	fi
-	
-	sleep 3
+	cp device_1.txt /var/www/html/openwrt1.txt
+	cp device_2.txt /var/www/html/openwrt2.txt
+	cp device_3.txt /var/www/html/openwrt3.txt
+	cp device_4.txt /var/www/html/openwrt4.txt 
+
+	echo "finish"	
 done
